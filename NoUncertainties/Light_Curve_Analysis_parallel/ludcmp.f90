@@ -1,11 +1,10 @@
-subroutine ludcmp(a,n,np,indx)
+subroutine ludcmp(a,n,np,indx,ierr)
       
-integer n, np, indx(n), NMAX, i, imax, j, k
+integer n, np, indx(n), NMAX, i, imax, j, k, ierr
 real(8) d, a(np,np), TINY, aamax, dum, sum 
 parameter (NMAX = 500,TINY = 1.0e-20)
 real(8) vv(NMAX)
       
-   
 d = 1.d0
 do i = 1, n
  aamax = 0.D0
@@ -15,7 +14,7 @@ do i = 1, n
  enddo
   
  if(aamax == 0.d0) then
-  write(*,"('singular matrix in ludcmp')")
+  ierr = 1
   return
  endif
   

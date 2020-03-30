@@ -1,4 +1,5 @@
-subroutine FittingFunction(ifreq) ! Build a function that will be fit to the data afterwards
+!subroutine FittingFunction(ifreq) ! Build a function that will be fit to the data afterwards
+subroutine FittingFunction(ifreq,ifreq_check) ! Build a function that will be fit to the data afterwards
 
 use lomb_scargle
 use light_curve
@@ -12,8 +13,10 @@ real(8) MedianHighArray(NumberPointsMedian), MedianLowArray(NumberPointsMedian),
 real(8) BinCentersPerFrequency(NumberBins), FluxBinnedPerFrequency(NumberBins)
 integer indx1(TwiceNumberHarmonics)
 integer MinimumLocation(1), MaximumLocation(1)
+logical ifreq_check
 
-if(ifreq == 1) then ! We do this for the dominant extracted frequency only
+if(ifreq == 1 .and. ifreq_check .eqv. .true.) then ! We do this for the dominant extracted frequency only
+!if(ifreq == 1) then ! We do this for the dominant extracted frequency only
 
 ! call PhaseBinning(FrequenciesExtracted(ifreq),BinCentersPerFrequency,FluxBinnedPerFrequency,BinMinimumFluxValuePrimary,0,theta1) ! Phase bin the data according to half the extracted frequency
 ! theta1 = theta1/Variance(ifreq)
@@ -82,7 +85,8 @@ enddo
 ! Fit the function to the data
 
 call linfit(ntimes,TwiceNumberHarmonics,flux,weights,FUNC,a1,b1) 
-call ludcmp(a1,TwiceNumberHarmonics,TwiceNumberHarmonics,indx1)
+call ludcmp(a1,TwiceNumberHarmonics,TwiceNumberHarmonics,indx1,ierr)
+if(ierr /= 0) return
 call lubksb(a1,TwiceNumberHarmonics,TwiceNumberHarmonics,indx1,b1)
 
 FittingCoefficientsPerFrequency(ifreq,1:TwiceNumberHarmonics) = b1(1:TwiceNumberHarmonics)

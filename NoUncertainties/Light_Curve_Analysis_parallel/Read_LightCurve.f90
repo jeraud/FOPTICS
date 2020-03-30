@@ -22,6 +22,8 @@ do
  if(k /= 0) cycle ! Proceed to the next entry should the one in question contain a comment
  k = 0; k = index(arg,"nan"); k1 = 0; k1 = index(arg,"Nan"); k2 = 0; k2 = index(arg,"NAN")
  if(k /= 0 .or. k1 /= 0 .or. k2 /= 0) cycle
+ k = 0; k = index(arg,"inf"); k1 = 0; k1 = index(arg,"Inf"); k2 = 0; k2 = index(arg,"INF")
+ if(k /= 0 .or. k1 /= 0 .or. k2 /= 0) cycle
  read(arg,*,iostat=ios) t, f ! Read time and flux from a string
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is needed when light curves are in relative flux with the mean value of zero. This allows to avoid negative flux values. !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -41,6 +43,8 @@ do
  k = 0; k = index(arg,'#') ! Check whether the entry in question contains a comment
  if(k /= 0) cycle ! Proceed to the next entry should the one in question contain a comment
  k = 0; k = index(arg,"nan"); k1 = 0; k1 = index(arg,"Nan"); k2 = 0; k2 = index(arg,"NAN")
+ if(k /= 0 .or. k1 /= 0 .or. k2 /= 0) cycle
+ k = 0; k = index(arg,"inf"); k1 = 0; k1 = index(arg,"Inf"); k2 = 0; k2 = index(arg,"INF")
  if(k /= 0 .or. k1 /= 0 .or. k2 /= 0) cycle
  read(arg,*,iostat=ios) t, f ! Read time and flux from a string
 
